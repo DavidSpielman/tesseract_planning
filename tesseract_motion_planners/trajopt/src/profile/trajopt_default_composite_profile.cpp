@@ -31,6 +31,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/shared_ptr.hpp>
+#include <boost/serialization/vector.hpp>
 #include <yaml-cpp/yaml.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
@@ -91,6 +92,10 @@ TrajOptDefaultCompositeProfile::TrajOptDefaultCompositeProfile(
 
     if (YAML::Node n = config["avoid_singularity_coeff"])
       avoid_singularity_coeff = n.as<double>();
+
+    if (YAML::Node n = config["fixed_dofs"])
+      fixed_dofs = n.as<std::vector<int>>();
+
   }
   catch (const std::exception& e)
   {
@@ -192,6 +197,7 @@ void TrajOptDefaultCompositeProfile::serialize(Archive& ar, const unsigned int /
   ar& BOOST_SERIALIZATION_NVP(jerk_coeff);
   ar& BOOST_SERIALIZATION_NVP(avoid_singularity);
   ar& BOOST_SERIALIZATION_NVP(avoid_singularity_coeff);
+  ar& BOOST_SERIALIZATION_NVP(fixed_dofs);
 }
 
 }  // namespace tesseract_planning

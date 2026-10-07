@@ -264,7 +264,7 @@ TrajOptMotionPlanner::createProblem(const PlannerRequest& request) const
     pci->init_info.data.row(i) = seed_states[static_cast<std::size_t>(i)];
 
   // Get composite cost and constraints
-  TrajOptCompositeProfile::ConstPtr composite_profile = request.profiles->getProfile<TrajOptCompositeProfile>(
+  TrajOptDefaultCompositeProfile::ConstPtr composite_profile = request.profiles->getProfile<TrajOptDefaultCompositeProfile>(
       name_, request.instructions.getProfile(name_), std::make_shared<TrajOptDefaultCompositeProfile>());
 
   if (!composite_profile)
@@ -277,6 +277,11 @@ TrajOptMotionPlanner::createProblem(const PlannerRequest& request) const
 
   if (!c_term_infos.constraints.empty())
     pci->cnt_infos.insert(pci->cnt_infos.end(), c_term_infos.constraints.begin(), c_term_infos.constraints.end());
+
+  if (!composite_profile->fixed_dofs.empty())
+  {
+    pci->basic_info.fixed_dofs = composite_profile->fixed_dofs;
+  }
 
   return pci;
 }
