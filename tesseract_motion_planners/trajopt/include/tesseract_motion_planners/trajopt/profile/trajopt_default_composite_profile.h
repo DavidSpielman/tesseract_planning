@@ -78,6 +78,8 @@ public:
   bool avoid_singularity = false;
   /** @brief Optimization weight associated with kinematic singularity avoidance */
   double avoid_singularity_coeff = 5.0;
+  /** @brief Specifies which joint indices in the kinematic chain should be treated as fixed */
+  std::vector<int> fixed_dofs{};
 
   TrajOptTermInfos create(const tesseract_common::ManipulatorInfo& composite_manip_info,
                           const std::shared_ptr<const tesseract_environment::Environment>& env,
